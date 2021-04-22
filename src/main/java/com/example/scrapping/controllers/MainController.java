@@ -19,6 +19,8 @@ public class MainController {
     modelAndView.addObject("listaSazetaka", indexModel.getSazetciClanaka());
     modelAndView.addObject("linkoviClanci", indexModel.getLinkoviNaClanke());
     modelAndView.addObject("linkoviNaSlile", indexModel.getLinkoviSlikeClanaka());
+    modelAndView.addObject("listaVremenaObjave", indexModel.getVremenaObjave());
+
     modelAndView.addObject("counter", new Counter());
     modelAndView.setViewName("index");
 

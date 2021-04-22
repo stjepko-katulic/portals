@@ -73,4 +73,14 @@ public class IndexModel {
     return linkoviNaClanake;
   }
 
+
+  public List<String> getVremenaObjave() {
+    List<String> vremenaObjave = elements.stream()
+            .map(x->x.parent().getElementsByClass("num").html() + " " +
+                    x.parent().getElementsByClass("desc").html())
+            .collect(Collectors.toList());
+
+    return vremenaObjave;
+  }
+
 }

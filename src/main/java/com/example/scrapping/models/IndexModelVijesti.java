@@ -8,19 +8,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IndexModel {
+public class IndexModelVijesti implements IIndex {
 
   String baseUrlIndex = "www.index.hr";
   Document doc;
   Elements elements;
 
-  public IndexModel () throws IOException {
+  public IndexModelVijesti() throws IOException {
     doc = Jsoup.connect("https://www.index.hr/najnovije?kategorija=3").get();
     // trazenje svih elementata klase "title-box"
     elements = doc.getElementsByClass("title-box");
   }
 
-
+  @Override
   public List<String> getNasloviClanaka() {
     // mapiranje naslova clanaka u listu
     List<String> nasloviClanaka = elements.stream()
@@ -29,8 +29,8 @@ public class IndexModel {
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
 
-              if (naslov.indexOf(">")!=-1) {
-                naslov = naslov.substring(naslov.lastIndexOf(">")+1, naslov.length());
+              if (naslov.indexOf(">") != -1) {
+                naslov = naslov.substring(naslov.lastIndexOf(">") + 1);
               }
 
               return naslov;
@@ -40,7 +40,7 @@ public class IndexModel {
     return nasloviClanaka;
   }
 
-
+  @Override
   public List<String> getSazetciClanaka() {
     List<String> sazetciClanaka = elements.stream()
             .map(x -> {
@@ -55,7 +55,7 @@ public class IndexModel {
     return sazetciClanaka;
   }
 
-
+  @Override
   public List<String> getLinkoviSlikeClanaka() {
     List<String> linkoviNaFotke = elements.stream()
             .map(x -> x.getElementsByClass("img-responsive").get(0).attr("src"))
@@ -64,7 +64,7 @@ public class IndexModel {
     return linkoviNaFotke;
   }
 
-
+  @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanake = elements.stream()
             .map(x -> baseUrlIndex + x.getElementsByClass("vijesti-text-hover").get(0).attr("href"))
@@ -73,10 +73,10 @@ public class IndexModel {
     return linkoviNaClanake;
   }
 
-
+  @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
-            .map(x->x.parent().getElementsByClass("num").html() + " " +
+            .map(x -> x.parent().getElementsByClass("num").html() + " " +
                     x.parent().getElementsByClass("desc").html())
             .collect(Collectors.toList());
 

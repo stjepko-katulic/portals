@@ -9,6 +9,15 @@ body {
     margin: 10px auto 5px auto;
 }
 
+#vijesti-tab, #sport-tab {
+    font-weight: bolder;
+}
+
+.btn-warning {
+    position: relative;
+    left: 868px;
+}
+
 .main-container {
     width: 1100px;
     margin: auto;
@@ -43,6 +52,7 @@ body {
     width: 350px;
     float: right;
     margin: 15px;
+    margin-right: 25px;
 }
 
 .news-container-left {

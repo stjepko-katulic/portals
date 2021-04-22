@@ -16,67 +16,97 @@
 
 <body>
 
-
-
 <div class="tabs-container">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#vijesti" role="tab" aria-controls="home"
+            <a class="nav-link active" id="vijesti-tab" data-toggle="tab" href="#vijesti" role="tab" aria-controls="home"
                aria-selected="true">Vijesti</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#sport" role="tab" aria-controls="profile"
+            <a class="nav-link" id="sport-tab" data-toggle="tab" href="#sport" role="tab" aria-controls="profile"
                aria-selected="false">Sport</a>
         </li>
+        <button type="button" class="btn btn-warning">Refresh</button>
     </ul>
 </div>
 
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="vijesti" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="main-container">
+            <th:block th:each="naslov : ${listaNaslovaVijesti}">
+                <div class="main-news-container">
+                    <div class="news-container">
+                        <div class="time-container-left">
+                            <span class="vrijeme-objave"
+                                  th:text="${listaVremenaObjaveVijesti.get(counter.getCounter())}"></span>
+                        </div>
 
-    </div>
-    
-    <div class="tab-pane fade" id="sport" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="news-container-left">
+                            <img class="image" th:src="${linkoviNaSlikeVijesti.get(counter.getCounter())}"
+                                 alt="slika-naslova">
+                        </div>
 
-    </div>
-</div>
+                        <div class="news-container-right">
+                            <a class="heading" th:text="${naslov}" target="_blank"
+                               th:href="'http://' + ${linkoviClanciVijesti.get(counter.getCounter())}"></a>
 
-
-
-
-
-
-<div class="main-container">
-
-    <th:block th:each="naslov : ${listaNaslova}">
-
-        <div class="main-news-container">
-
-            <div class="news-container">
-
-                <div class="time-container-left">
-                    <span class="vrijeme-objave" th:text="${listaVremenaObjave.get(counter.getCounter())}"></span>
+                            <p class="summary" th:text="${listaSazetakaVijesti.get(counter.getCounter())}"></p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="news-container-left">
-                    <img class="image" th:src="${linkoviNaSlile.get(counter.getCounter())}" alt="slika-naslova">
-                </div>
+                <p hidden th:text="${counter.increment()}"></p>
 
-                <div class="news-container-right">
-                    <a class="heading" th:text="${naslov}"
-                       th:href="'http://' + ${linkoviClanci.get(counter.getCounter())}"></a>
+            </th:block>
 
-                    <p class="summary" th:text="${listaSazetaka.get(counter.getCounter())}"></p>
-                </div>
-            </div>
+            <p hidden th:text="${counter.reset()}"></p>
         </div>
+    </div>
 
-        <p hidden th:text="${counter.increment()}"></p>
 
-    </th:block>
+    <div class="tab-pane fade" id="sport" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="main-container">
+            <th:block th:each="naslov : ${listaNaslovaSport}">
+                <div class="main-news-container">
+                    <div class="news-container">
+                        <div class="time-container-left">
+                            <span class="vrijeme-objave"
+                                  th:text="${listaVremenaObjaveSport.get(counter.getCounter())}"></span>
+                        </div>
 
+                        <div class="news-container-left">
+                            <img class="image" th:src="${linkoviNaSlikeSport.get(counter.getCounter())}"
+                                 alt="slika-naslova">
+                        </div>
+
+                        <div class="news-container-right">
+                            <a class="heading" th:text="${naslov}" target="_blank"
+                               th:href="'http://' + ${linkoviClanciSport.get(counter.getCounter())}"></a>
+
+                            <p class="summary" th:text="${listaSazetakaSport.get(counter.getCounter())}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <p hidden th:text="${counter.increment()}"></p>
+
+            </th:block>
+
+            <p hidden th:text="${counter.reset()}"></p>
+        </div>
+    </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -85,5 +115,7 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="js/myscript.js"></script>
+
 </body>
 </html>

@@ -1,15 +1,25 @@
 body {
     box-sizing: border-box;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 .tabs-container {
-    width: 800px;
-    margin: 10px auto 5px auto;
+    width: 803px;
+    margin: 15px auto 0px auto;
+}
+
+.tabs-container {
+    position: sticky;
+    top: 0;
 }
 
 #vijesti-tab, #sport-tab {
     font-weight: normal;
+}
+
+#myTab {
+    background-color: whitesmoke;
+    opacity: 100%;
 }
 
 /*refresh button*/
@@ -19,21 +29,18 @@ body {
 }
 
 .main-container {
-    width: 1100px;
+    width: 800px;
     margin: auto;
     background-color: white;
     padding-top: 30px;
 }
 
 .time-container-left {
-    margin: 5px;
+    margin-left: 5px;
 }
 
 .vrijeme-objave {
-    font-size: 14px;
-    font-weight: bold;
-    color: darkred;
-    border-bottom: 2px solid darkred;
+    font-size: 12px;
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
 }
 
@@ -41,7 +48,7 @@ body {
     background-color: white;
     border-bottom: 1px solid #e0a800;
     width: 680px;
-    height: 250px;
+    height: 230px;
     margin: 0 auto 10px auto;
     color: black;
     padding-bottom: 3px;
@@ -49,10 +56,11 @@ body {
 
 .news-container-right {
     display: inline-block;
-    width: 350px;
+    width: 380px;
     float: right;
     margin: 15px;
     margin-right: 25px;
+    margin-bottom: 20px;
 }
 
 .news-container-left {
@@ -65,7 +73,7 @@ body {
 .heading {
     top:15px;
     font-family: 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     text-align: justify;
     font-weight: bold;
 }
@@ -91,4 +99,81 @@ a:hover {
 
 .image {
     border: 2px solid #fcc200;
+    width: 230px;
+    height: 123px;
 }
+
+
+/*sidebar menu*/
+.sidebar-menu-container {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    width: 250px;
+    height: 100vh;
+    background-color: #e0a800;
+    transition: left 2s;
+}
+
+.sidebar-menu-container:hover {
+    left: 0px;
+    transition: left 2s;
+}
+
+.popis-portala {
+    position: relative;
+    top: 100px;
+    /*left: 40px;*/
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    width: 120px;
+}
+
+.sidebar-menu-container p:hover {
+    opacity: 50%;
+    cursor: pointer;
+}
+
+.naslov-stranice {
+    position: relative;
+    top: 25px;
+    background-color: white;
+    height: 60px;
+    padding-top: 17px;
+}
+
+.naslov-stranice .naslov {
+    margin-left: 45px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bolder;
+    text-shadow: 1px 1px #e0a800;
+}
+
+.portal-link-container {
+    width: 250px;
+    margin-bottom: 10px;
+}
+
+.link-portal-index, .link-portal-narod, .link-portal-dnevno {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 0;
+    left:70px;
+}
+
+.index-link-container {
+    background-color: #A07800;
+}
+
+/* logo portala*/
+.logo-portala {
+    width: 70px;
+    height:18px;
+    margin-left: 300px;
+}
+
+
+
+
+

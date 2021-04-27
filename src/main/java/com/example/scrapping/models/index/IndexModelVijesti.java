@@ -1,5 +1,6 @@
-package com.example.scrapping.models;
+package com.example.scrapping.models.index;
 
+import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -8,14 +9,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IndexModelSport implements IIndex{
+public class IndexModelVijesti implements IPortal {
 
-  String baseUrlIndex = "www.index.hr";
+  String baseUrlIndex = "http://www.index.hr";
   Document doc;
   Elements elements;
 
-  public IndexModelSport() throws IOException {
-    doc = Jsoup.connect("https://www.index.hr/najnovije?kategorija=150").get();
+  public IndexModelVijesti() throws IOException {
+    doc = Jsoup.connect("https://www.index.hr/najnovije?kategorija=3").get();
     // trazenje svih elementata klase "title-box"
     elements = doc.getElementsByClass("title-box");
   }
@@ -47,6 +48,11 @@ public class IndexModelSport implements IIndex{
               String sazetak = x.getElementsByClass("summary").html();
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
+
+              if (sazetak.length()>250) {
+                sazetak = sazetak.substring(0, 250) + "...";
+              }
+
               return sazetak;
             })
 
@@ -67,7 +73,7 @@ public class IndexModelSport implements IIndex{
   @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanake = elements.stream()
-            .map(x -> baseUrlIndex + x.getElementsByClass("sport-text-hover").get(0).attr("href"))
+            .map(x -> baseUrlIndex + x.getElementsByClass("vijesti-text-hover").get(0).attr("href"))
             .collect(Collectors.toList());
 
     return linkoviNaClanake;
@@ -76,10 +82,11 @@ public class IndexModelSport implements IIndex{
   @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
-            .map(x -> x.parent().getElementsByClass("num").html() + " " +
+            .map(x -> "prije " + x.parent().getElementsByClass("num").html() + " " +
                     x.parent().getElementsByClass("desc").html())
             .collect(Collectors.toList());
 
     return vremenaObjave;
   }
+
 }

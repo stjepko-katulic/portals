@@ -13,14 +13,16 @@ public class NarodModelSport implements IPortal {
 
   String baseUrlNarod = "www.narod.hr";
   Elements elements = new Elements();
+  Elements elementsSazetci = new Elements();
 
   public NarodModelSport() throws IOException {
-    int brojStranica=1;
+    int brojStranica=2;
 
     for (int i=1; i<=brojStranica; i++) {
       Document document = Jsoup.connect("https://narod.hr/sport/page/" + i).get();
       Elements elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
       elements.addAll(elementsX);
+      elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
     }
   }
 
@@ -36,9 +38,8 @@ public class NarodModelSport implements IPortal {
 
   @Override
   public List<String> getSazetciClanaka() {
-    List<String> sazetciClanaka = elements.stream()
-            .filter(x -> x.attr("href").contains("https://narod.hr/sport"))
-            .map(x -> "")
+    List<String> sazetciClanaka = elementsSazetci.stream()
+            .map(x -> x.html())
             .collect(Collectors.toList());
 
     return sazetciClanaka;

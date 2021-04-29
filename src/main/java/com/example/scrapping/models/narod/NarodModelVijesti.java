@@ -13,20 +13,23 @@ public class NarodModelVijesti implements IPortal {
 
   String baseUrlNarod = "www.narod.hr";
   Elements elements = new Elements();
+  Elements elementsSazetci = new Elements();
 
   public NarodModelVijesti() throws IOException {
-    int brojStranica=1;
+    int brojStranica=2;
 
     for (int i=1; i<=brojStranica; i++) {
       // vijesti iz hrvatske
       Document document = Jsoup.connect("https://narod.hr/hrvatska/page/" + i).get();
       Elements elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
       elements.addAll(elementsX);
+      elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
 
       // vijesti iz svijeta
       document = Jsoup.connect("https://narod.hr/svijet/page/" + i).get();
       elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
       elements.addAll(elementsX);
+      elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
     }
   }
 
@@ -40,8 +43,8 @@ public class NarodModelVijesti implements IPortal {
 
   @Override
   public List<String> getSazetciClanaka() {
-    List<String> sazetciClanaka = elements.stream()
-            .map(x -> "")
+    List<String> sazetciClanaka = elementsSazetci.stream()
+            .map(x -> x.html())
             .collect(Collectors.toList());
     return sazetciClanaka;
   }

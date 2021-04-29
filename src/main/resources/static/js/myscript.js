@@ -29,14 +29,28 @@ $('.link-portal-index').on('click', function () {
     $("#ubacivanje-novog-sadrzaja").load("/ #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
         if(statusTxt == "success") {
             $('.portal-link-container').css('background-color', '#e0a800');
-            $('.link-portal-index').parent().css('background-color','#A07800');
             $('#vijesti-tab').click();
             window.scrollTo(0, 0);
             $('.image').css({'width':'230px', 'height':'123px'});
             $('.logo-portala').attr('src', 'imgs/indexhr-logo.png');
         }
         if(statusTxt == "error") {
-            alert("Error: " + xhr.status + ": " + xhr.statusText);
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+});
+
+$('.link-portal-net').on('click', function () {
+    $("#ubacivanje-novog-sadrzaja").load("/net #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
+        if(statusTxt == "success") {
+            $('.portal-link-container').css('background-color', '#e0a800');
+            $('#vijesti-tab').click();
+            window.scrollTo(0, 0);
+            $('.image').css({'width':'210px', 'height':'123px'});
+            $('.logo-portala').attr('src', 'imgs/nethr-logo.png');
+        }
+        if(statusTxt == "error") {
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
         }
     });
 });
@@ -45,32 +59,68 @@ $('.link-portal-narod').on('click', function () {
     $("#ubacivanje-novog-sadrzaja").load("/narod #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
         if(statusTxt == "success") {
             $('.portal-link-container').css('background-color', '#e0a800');
-            $('.link-portal-narod').parent().css('background-color', '#A07800');
             $('#vijesti-tab').click();
             window.scrollTo(0, 0);
-            $('.image').css({'width':'230px', 'height':'166px'});
+            $('.image').css({'width':'230px', 'height':'155px'});
             $('.logo-portala').attr('src', 'imgs/narodhr-logo.png');
         }
         if(statusTxt == "error") {
-            alert("Error: " + xhr.status + ": " + xhr.statusText);
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
         }
     });
 });
+
+
 
 $('.link-portal-dnevno').on('click', function () {
     $("#ubacivanje-novog-sadrzaja").load("/dnevno #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
         if(statusTxt == "success") {
             $('.portal-link-container').css('background-color', '#e0a800');
-            $('.link-portal-dnevno').parent().css('background-color', '#A07800');
             $('#vijesti-tab').click();
             window.scrollTo(0, 0);
             $('.image').css({'width':'230px', 'height':'118px'});
             $('.logo-portala').attr('src', 'imgs/dnevnohr-logo.png');
         }
         if(statusTxt == "error") {
-            alert("Error: " + xhr.status + ": " + xhr.statusText);
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
         }
     });
 });
 
 
+$('.link-portal-rep').on('click', function () {
+    $("#ubacivanje-novog-sadrzaja").load("/rep #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
+        if(statusTxt == "success") {
+            $('.portal-link-container').css('background-color', '#e0a800');
+            $('#vijesti-tab').click();
+            window.scrollTo(0, 0);
+            $('.image').css({'width':'190px', 'height':'110px'});
+            $('.logo-portala').attr('src', 'imgs/rephr-logo.png');
+
+            // na ovom portalu nema sporta pa se hidea sport tab
+            $('#sport-tab').hide()
+        }
+        if(statusTxt == "error") {
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+});
+
+
+$('.link-portal-ict').on('click', function () {
+    $("#ubacivanje-novog-sadrzaja").load("/ict #ubacivanje-novog-sadrzaja", function (responseTxt, statusTxt, xhr) {
+        if(statusTxt == "success") {
+            $('.portal-link-container').css('background-color', '#e0a800');
+            $('#vijesti-tab').click();
+            window.scrollTo(0, 0);
+            $('.image').css({'width':'190px', 'height':'110px'});
+            $('.logo-portala').attr('src', 'imgs/ictinfo-logo.png');
+
+            // na ovom portalu nema sporta pa se hidea sport tab
+            $('#sport-tab').hide()
+        }
+        if(statusTxt == "error") {
+            alert("Doslo je do pogreske: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+});

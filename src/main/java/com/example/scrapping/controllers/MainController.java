@@ -4,10 +4,14 @@ import com.example.scrapping.models.Counter;
 import com.example.scrapping.models.IPortal;
 import com.example.scrapping.models.dnevno.DnevnoModelSport;
 import com.example.scrapping.models.dnevno.DnevnoModelVijesti;
+import com.example.scrapping.models.ict.IctModelVijesti;
 import com.example.scrapping.models.index.IndexModelSport;
 import com.example.scrapping.models.index.IndexModelVijesti;
 import com.example.scrapping.models.narod.NarodModelSport;
 import com.example.scrapping.models.narod.NarodModelVijesti;
+import com.example.scrapping.models.net.NetModelSport;
+import com.example.scrapping.models.net.NetModelVijesti;
+import com.example.scrapping.models.rep.RepModelVijesti;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,10 +64,42 @@ public class MainController {
     return modelAndView;
   }
 
-  @GetMapping("/proba")
-  public ProbnaKlasa getProba() {
+  @GetMapping("/net")
+  public ModelAndView netScrapping() throws IOException {
+    ModelAndView modelAndView = new ModelAndView();
+    IPortal netModelVijesti = new NetModelVijesti();
+    IPortal netModelSport = new NetModelSport();
+    getModelAndView(netModelVijesti, modelAndView, "Vijesti");
+    getModelAndView(netModelSport, modelAndView, "Sport");
 
-    return new ProbnaKlasa("Stjepko", "Katulic", 37);
+    modelAndView.addObject("counter", new Counter());
+    modelAndView.setViewName("index");
+
+    return modelAndView;
+  }
+
+  @GetMapping("/rep")
+  public ModelAndView repScrapping() throws IOException {
+    ModelAndView modelAndView = new ModelAndView();
+    IPortal repModelVijesti = new RepModelVijesti();
+    getModelAndView(repModelVijesti, modelAndView, "Vijesti");
+
+    modelAndView.addObject("counter", new Counter());
+    modelAndView.setViewName("index");
+
+    return modelAndView;
+  }
+
+  @GetMapping("/ict")
+  public ModelAndView ictScrapping() throws IOException {
+    ModelAndView modelAndView = new ModelAndView();
+    IPortal ictModelVijesti = new IctModelVijesti();
+    getModelAndView(ictModelVijesti, modelAndView, "Vijesti");
+
+    modelAndView.addObject("counter", new Counter());
+    modelAndView.setViewName("index");
+
+    return modelAndView;
   }
 
 
@@ -76,17 +112,4 @@ public class MainController {
 
     return modelAndView;
   }
-}
-
-class ProbnaKlasa {
-
-  public ProbnaKlasa(String firstName, String lastName, int age) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.age = age;
-  }
-
-  public String firstName;
-  public String lastName;
-  public int age;
 }

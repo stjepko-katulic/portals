@@ -15,9 +15,15 @@
 
 
 <body>
+<!--<button type="button" class="btn btn-warning">Osvježi</button>-->
+<div id="ubacivanje-novog-sadrzaja">
 
+    <div class="pomocni-div1">
+
+    </div>
 
 <div class="tabs-container">
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="vijesti-tab" data-toggle="tab" href="#vijesti" role="tab" aria-controls="home"
@@ -31,7 +37,7 @@
     </ul>
 </div>
 
-<div id="ubacivanje-novog-sadrzaja">
+
 
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="vijesti" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -73,6 +79,7 @@
                 <th:block th:each="naslov : ${listaNaslovaSport}">
                     <div class="main-news-container">
                         <div class="news-container">
+                            <img class="logo-portala" alt="portal" src="imgs/indexhr-logo.png">
                             <div class="time-container-left">
                             <span class="vrijeme-objave"
                                   th:text="${listaVremenaObjaveSport.get(counter.getCounter())}"></span>
@@ -105,14 +112,23 @@
 
 <!--sidebar menu-->
 <div class="sidebar-menu-container">
-    <div class="naslov-stranice">
-        <span class="naslov">Pregled HR portala</span>
-    </div>
 
     <div class="popis-portala">
+
+        <div class="vijesti>">
+            <p class="vijesti-naslov">VIJESTI</p>
+        </div>
+
+
         <form class="form-index" method="get" action="/">
             <div class="portal-link-container index-link-container">
                 <p class="link-portal-index">index.hr</p>
+            </div>
+        </form>
+
+        <form class="form-net" method="get" action="/net">
+            <div class="portal-link-container">
+                <p class="link-portal-net">net.hr</p>
             </div>
         </form>
 
@@ -128,7 +144,29 @@
             </div>
         </form>
 
+        <br>
+        <br>
+        <br>
+
+        <div class="vijesti>">
+            <p class="vijesti-naslov">ICT</p>
+        </div>
+
+        <form class="form-rep" method="get" action="/rep">
+            <div class="portal-link-container">
+                <p class="link-portal-rep">rep.hr</p>
+            </div>
+        </form>
+
+        <form class="form-ict" method="get" action="/ict">
+            <div class="portal-link-container">
+                <p class="link-portal-ict">ictbusiness.info</p>
+            </div>
+        </form>
+
     </div>
+
+    <img class="ikonica" src="imgs/pdf.svg" height="120px" width="120px">
 </div>
 
 

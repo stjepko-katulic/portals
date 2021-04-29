@@ -14,7 +14,7 @@ public class DnevnoModelVijesti implements IPortal {
   Elements elements = new Elements();
 
   public DnevnoModelVijesti() throws IOException {
-    int brojStranica=1;
+    int brojStranica=2;
 
     for (int i=1; i<=brojStranica; i++) {
       // vijesti iz hrvatske

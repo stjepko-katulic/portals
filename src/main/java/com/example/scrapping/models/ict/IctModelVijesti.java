@@ -15,15 +15,15 @@ public class IctModelVijesti implements IPortal {
   Elements elements = new Elements();
   String baseUrlIctBusiness = "https://www.ictbusiness.info/";
 
-  public IctModelVijesti() throws IOException {
-    int brojStranica=60;
+  public IctModelVijesti(String stranica) throws IOException {
 
-    for (int skip=0; skip<=brojStranica; skip=skip+30) {
+     String skip = Integer.toString((Integer.parseInt(stranica)-1)*30);
+
       Document document = Jsoup.connect("https://www.ictbusiness.info/vijesti/?skip=" + skip).get();
       Elements elementsX = document.getElementsByClass("main-content-block").get(0)
               .getElementsByClass("item");
       elements.addAll(elementsX);
-    }
+
   }
 
 
@@ -31,8 +31,13 @@ public class IctModelVijesti implements IPortal {
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.getElementsByClass("item-content").get(0)
-                       .getElementsByTag("a").get(0).html())
+            .map(x -> {
+              String naslov = x.getElementsByClass("item-content").get(0)
+                      .getElementsByTag("a").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }
@@ -43,6 +48,8 @@ public class IctModelVijesti implements IPortal {
             .map(x -> {
               String sazetak = x.getElementsByClass("item-content").get(0)
                       .getElementsByTag("p").get(0).html();
+              sazetak = sazetak.replace("&nbsp;", " ");
+              sazetak = sazetak.replace("&amp;", "&");
 
               if (sazetak.length()>250) {
                 sazetak = sazetak.substring(0, 250) + "...";

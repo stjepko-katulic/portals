@@ -2,11 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+
+    <link rel="shortcut icon" type="image/svg" href="imgs/worldwide.png"/>
+<!--    <link rel="shortcut icon" href="../static/imgs/worldwide.svg">-->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
 
     <link rel="stylesheet" th:href="@{/css/mycss.css}">
+    <link rel="stylesheet" th:href="@{/css/mobile.css}">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -18,94 +23,122 @@
 <!--<button type="button" class="btn btn-warning">Osvježi</button>-->
 <div id="ubacivanje-novog-sadrzaja">
 
-    <div class="pomocni-div1">
+    <div class="pomocni-div1"></div>
 
+    <div class="tabs-container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="vijesti-tab" data-toggle="tab" href="#vijesti" role="tab" aria-controls="home"
+                   aria-selected="true">Vijesti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="sport-tab" data-toggle="tab" href="#sport" role="tab" aria-controls="profile"
+                   aria-selected="false">Sport</a>
+            </li>
+
+            <nav class="navigacija-stranice" aria-label="Page navigation example" hidden>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link page-left" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link link-page1" th:value="1" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link link-page2" th:value="2" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link link-page3" th:value="3" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link link-page4" th:value="4" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link link-page5" th:value="5" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link link-page6" th:value="6" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link link-page7" th:value="7" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link link-page8" th:value="8" href="#">8</a></li>
+                    <li class="page-item">
+                        <a class="page-link page-right" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <button type="button" class="btn btn-warning">Osvježi</button>
+        </ul>
     </div>
 
-<div class="tabs-container">
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="vijesti-tab" data-toggle="tab" href="#vijesti" role="tab" aria-controls="home"
-               aria-selected="true">Vijesti</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="sport-tab" data-toggle="tab" href="#sport" role="tab" aria-controls="profile"
-               aria-selected="false">Sport</a>
-        </li>
-        <button type="button" class="btn btn-warning">Osvježi</button>
-    </ul>
-</div>
+    <div id="ubacivanje-novih-clanaka">
 
-
-
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="vijesti" role="tabpanel" aria-labelledby="nav-home-tab">
-            <div class="main-container">
-                <th:block th:each="naslov : ${listaNaslovaVijesti}">
-                    <div class="main-news-container">
-                        <div class="news-container">
-                            <img class="logo-portala" alt="portal" src="imgs/indexhr-logo.png">
-                            <div class="time-container-left">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="vijesti" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="main-container">
+                    <th:block th:each="naslov : ${listaNaslovaVijesti}">
+                        <div class="main-news-container">
+                            <div class="news-container">
+                                <img class="logo-portala" alt="portal" src="imgs/index-logo.png">
+                                <div class="time-container-left">
                                 <span class="vrijeme-objave"
                                       th:text="${listaVremenaObjaveVijesti.get(counter.getCounter())}"></span>
-                            </div>
+                                </div>
 
-                            <div class="news-container-left">
-                                <img class="image" th:src="${linkoviNaSlikeVijesti.get(counter.getCounter())}"
-                                     alt="slika-naslova">
-                            </div>
+<!--                                <div class="news-container-left">-->
+<!--                                    <img class="image" th:src="${linkoviNaSlikeVijesti.get(counter.getCounter())}"-->
+<!--                                         alt="slika-naslova">-->
+<!--                                </div>-->
 
-                            <div class="news-container-right">
-                                <a class="heading" th:text="${naslov}" target="_blank"
-                                   th:href="${linkoviClanciVijesti.get(counter.getCounter())}"></a>
+                                <div class="news-container-right">
+                                    <p class="heading">
+                                        <a class="heading1" th:text="${naslov}" target="_blank"
+                                           th:href="${linkoviClanciVijesti.get(counter.getCounter())}"></a></p>
 
-                                <p class="summary" th:text="${listaSazetakaVijesti.get(counter.getCounter())}"></p>
+                                    <p class="summary" th:text="${listaSazetakaVijesti.get(counter.getCounter())}"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p hidden th:text="${counter.increment()}"></p>
+                        <p hidden th:text="${counter.increment()}"></p>
 
-                </th:block>
+                    </th:block>
 
-                <p hidden th:text="${counter.reset()}"></p>
+                    <p hidden th:text="${counter.reset()}"></p>
+                </div>
             </div>
-        </div>
 
 
-        <div class="tab-pane fade" id="sport" role="tabpanel" aria-labelledby="nav-profile-tab">
-            <div class="main-container">
-                <th:block th:each="naslov : ${listaNaslovaSport}">
-                    <div class="main-news-container">
-                        <div class="news-container">
-                            <img class="logo-portala" alt="portal" src="imgs/indexhr-logo.png">
-                            <div class="time-container-left">
+            <div class="tab-pane fade" id="sport" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="main-container">
+                    <th:block th:each="naslov : ${listaNaslovaSport}">
+                        <div class="main-news-container">
+                            <div class="news-container">
+                                <img class="logo-portala" alt="portal" src="imgs/indexhr-logo.png">
+                                <div class="time-container-left">
                             <span class="vrijeme-objave"
                                   th:text="${listaVremenaObjaveSport.get(counter.getCounter())}"></span>
-                            </div>
+                                </div>
 
-                            <div class="news-container-left">
-                                <img class="image" th:src="${linkoviNaSlikeSport.get(counter.getCounter())}"
-                                     alt="slika-naslova">
-                            </div>
+<!--                                <div class="news-container-left"-->
+<!--                                    <img class="image" th:src="${linkoviNaSlikeSport.get(counter.getCounter())}"-->
+<!--                                         alt="slika-naslova">-->
+<!--                                </div>-->
 
-                            <div class="news-container-right">
-                                <a class="heading" th:text="${naslov}" target="_blank"
-                                   th:href="${linkoviClanciSport.get(counter.getCounter())}"></a>
+                                <div class="news-container-right">
+                                    <a class="heading" th:text="${naslov}" target="_blank"
+                                       th:href="${linkoviClanciSport.get(counter.getCounter())}"></a>
 
-                                <p class="summary" th:text="${listaSazetakaSport.get(counter.getCounter())}"></p>
+                                    <p class="summary" th:text="${listaSazetakaSport.get(counter.getCounter())}"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p hidden th:text="${counter.increment()}"></p>
+                        <p hidden th:text="${counter.increment()}"></p>
 
-                </th:block>
+                    </th:block>
 
-                <p hidden th:text="${counter.reset()}"></p>
+                    <p hidden th:text="${counter.reset()}"></p>
+                </div>
             </div>
         </div>
+
     </div>
 
 </div>
@@ -120,29 +153,23 @@
         </div>
 
 
-        <form class="form-index" method="get" action="/">
-            <div class="portal-link-container index-link-container">
-                <p class="link-portal-index">index.hr</p>
-            </div>
-        </form>
+        <div class="portal-link-container index-link-container">
+            <p class="link-portal-index">index.hr</p>
+        </div>
 
-        <form class="form-net" method="get" action="/net">
-            <div class="portal-link-container">
-                <p class="link-portal-net">net.hr</p>
-            </div>
-        </form>
 
-        <form class="form-narod" method="get" action="/narod">
-            <div class="portal-link-container">
-                <p class="link-portal-narod">narod.hr</p>
-            </div>
-        </form>
+        <div class="portal-link-container">
+            <p class="link-portal-net">net.hr</p>
+        </div>
 
-        <form class="form-dnevno" method="get" action="/dnevno">
-            <div class="portal-link-container">
-                <p class="link-portal-dnevno">dnevno.hr</p>
-            </div>
-        </form>
+
+        <div class="portal-link-container">
+            <p class="link-portal-narod">narod.hr</p>
+        </div>
+
+        <div class="portal-link-container">
+            <p class="link-portal-dnevno">dnevno.hr</p>
+        </div>
 
         <br>
         <br>
@@ -152,17 +179,16 @@
             <p class="vijesti-naslov">ICT</p>
         </div>
 
-        <form class="form-rep" method="get" action="/rep">
-            <div class="portal-link-container">
-                <p class="link-portal-rep">rep.hr</p>
-            </div>
-        </form>
 
-        <form class="form-ict" method="get" action="/ict">
-            <div class="portal-link-container">
-                <p class="link-portal-ict">ictbusiness.info</p>
-            </div>
-        </form>
+        <div class="portal-link-container">
+            <p class="link-portal-rep">rep.hr</p>
+        </div>
+
+
+        <div class="portal-link-container">
+            <p class="link-portal-ict">ictbusiness.info</p>
+        </div>
+
 
     </div>
 

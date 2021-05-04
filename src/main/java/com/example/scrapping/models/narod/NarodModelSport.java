@@ -15,22 +15,23 @@ public class NarodModelSport implements IPortal {
   Elements elements = new Elements();
   Elements elementsSazetci = new Elements();
 
-  public NarodModelSport() throws IOException {
-    int brojStranica=2;
-
-    for (int i=1; i<=brojStranica; i++) {
-      Document document = Jsoup.connect("https://narod.hr/sport/page/" + i).get();
+  public NarodModelSport(String stranica) throws IOException {
+      Document document = Jsoup.connect("https://narod.hr/sport/page/" + stranica).get();
       Elements elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
       elements.addAll(elementsX);
       elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
-    }
   }
 
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
             .filter(x -> x.attr("href").contains("https://narod.hr/sport"))
-            .map(x->x.attr("title"))
+            .map(x -> {
+              String naslov = x.attr("title");
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
 
     return nasloviClanaka;
@@ -39,7 +40,17 @@ public class NarodModelSport implements IPortal {
   @Override
   public List<String> getSazetciClanaka() {
     List<String> sazetciClanaka = elementsSazetci.stream()
-            .map(x -> x.html())
+            .map(x -> {
+              String sazetak = x.html();
+              sazetak = sazetak.replace("&nbsp;", " ");
+              sazetak = sazetak.replace("&amp;", "&");
+
+              if (sazetak.length()>250) {
+                sazetak = sazetak.substring(0, 250) + "...";
+              }
+
+              return sazetak;
+            })
             .collect(Collectors.toList());
 
     return sazetciClanaka;

@@ -1,0 +1,112 @@
+@media only screen and (max-width: 1000px) {
+
+
+    .pomocni-div1 {
+        width: 855px;
+    }
+    .tabs-container {
+        width: 855px;
+    }
+
+    .btn-warning {
+        left: 733px;
+        height: 60px;
+        width: 120px;
+        font-size: 25px;
+    }
+
+
+    .main-container {
+        width: 850px;
+    }
+
+    .news-container {
+        width: 700px;
+        height: 440px;
+    }
+
+    .news-container-right {
+        display: inline-block;
+        width: 660px;
+        float: right;
+        margin: 15px;
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
+
+    .heading {
+        font-size: 32px;
+    }
+
+    .summary {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    /* logo portala*/
+    .logo-portala {
+        width: 100px;
+        height:28px;
+        margin-left: 300px;
+    }
+    .vrijeme-objave {
+        font-size: 24px;
+    }
+
+    #vijesti-tab, #sport-tab {
+        height: 60px;
+        width: 120px;
+        font-size: 30px;
+    }
+
+    .page-link {
+        height: 60px;
+        width: 48px;
+        font-size: 30px;
+    }
+
+    .navigacija-stranice {
+        left: 235px;
+    }
+
+    .sidebar-menu-container {
+        position: fixed;
+        top: 0;
+        left: -270px;
+        width: 320px;
+        height: 100vh;
+        background-color: #e0a800;
+        transition: left 2s;
+    }
+
+    .popis-portala {
+        position: relative;
+        top: 100px;
+        font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        width: 120px;
+    }
+
+    .link-portal-index, .link-portal-narod, .link-portal-dnevno , .link-portal-net,
+    .link-portal-rep, .link-portal-ict {
+        left:40px;
+    }
+
+    .vijesti-naslov {
+        position: relative;
+        left: 20px;
+        color: white;
+        font-size: 30px;
+    }
+
+    .ikonica {
+        position: absolute;
+        bottom: 200px;
+        right: 90px;
+    }
+
+    .logo-portala {
+        margin-top: 15px;
+    }
+}

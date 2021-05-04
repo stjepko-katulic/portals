@@ -14,20 +14,16 @@ public class NetModelSport implements IPortal {
   String baseUrlNarod = "www.net.hr";
   Elements elements = new Elements();
 
-  public NetModelSport() throws IOException {
-    int brojStranica=2;
-
-    for (int i=1; i<=brojStranica; i++) {
+  public NetModelSport(String stranica) throws IOException {
       // nogomet
-      Document document = Jsoup.connect("https://net.hr/kategorija/sport/nogomet/page/" + i).get();
+      Document document = Jsoup.connect("https://net.hr/kategorija/sport/nogomet/page/" + stranica).get();
       Elements elementsX = document.getElementsByClass("article-feed");
       elements.addAll(elementsX);
 
       // ostali sportovi
-      document = Jsoup.connect("https://net.hr/kategorija/sport/ostali-sportovi/page/" + i).get();
+      document = Jsoup.connect("https://net.hr/kategorija/sport/ostali-sportovi/page/" + stranica).get();
       elementsX = document.getElementsByClass("article-feed");
       elements.addAll(elementsX);
-    }
   }
 
 
@@ -35,7 +31,12 @@ public class NetModelSport implements IPortal {
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.getElementsByClass("title").get(0).html())
+            .map(x -> {
+              String naslov = x.getElementsByClass("title").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }

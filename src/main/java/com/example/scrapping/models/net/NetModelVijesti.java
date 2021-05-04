@@ -14,26 +14,27 @@ public class NetModelVijesti implements IPortal {
   String baseUrlNarod = "www.net.hr";
   Elements elements = new Elements();
 
-  public NetModelVijesti() throws IOException {
-    int brojStranica=2;
-
-    for (int i=1; i<=brojStranica; i++) {
+  public NetModelVijesti(String stranica) throws IOException {
       // vijesti iz hrvatske
-      Document document = Jsoup.connect("https://net.hr/kategorija/danas/hrvatska/page/" + i).get();
+      Document document = Jsoup.connect("https://net.hr/kategorija/danas/hrvatska/page/" + stranica).get();
       Elements elementsX = document.getElementsByClass("article-feed");
       elements.addAll(elementsX);
 
       // vijesti iz svijeta
-      document = Jsoup.connect("https://net.hr/kategorija/danas/svijet/page/" + i).get();
+      document = Jsoup.connect("https://net.hr/kategorija/danas/svijet/page/" + stranica).get();
       elementsX = document.getElementsByClass("article-feed");
       elements.addAll(elementsX);
-    }
   }
 
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.getElementsByClass("title").get(0).html())
+            .map(x -> {
+              String naslov = x.getElementsByClass("title").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }

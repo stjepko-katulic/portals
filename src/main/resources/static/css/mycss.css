@@ -15,7 +15,7 @@ body {
 
 
 .tabs-container {
-    width: 803px;
+    width: 653px;
     margin: 0px auto 0px auto;
     position: sticky;
     top: 50px;
@@ -34,11 +34,11 @@ body {
 /*refresh button*/
 .btn-warning {
     position: absolute;
-    left: 725px;
+    left: 577px;
 }
 
 .main-container {
-    width: 800px;
+    width: 650px;
     margin: auto;
     background-color: white;
     padding-top: 30px;
@@ -56,7 +56,7 @@ body {
 .news-container {
     background-color: white;
     border-bottom: 1px solid #e0a800;
-    width: 680px;
+    width: 500px;
     height: 230px;
     margin: 0 auto 10px auto;
     color: black;
@@ -65,15 +65,16 @@ body {
 
 .news-container-right {
     display: inline-block;
-    width: 380px;
+    width: 400px;
     float: right;
     margin: 15px;
-    margin-right: 25px;
+    margin-right: 55px;
     margin-bottom: 20px;
 }
 
 .news-container-left {
     display: inline-block;
+    text-align: justify;
     margin: 15px;
     margin-left: 5px;
     float: left;
@@ -84,6 +85,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 17px;
     text-align: justify;
+    text-justify: auto;
     font-weight: bold;
 }
 
@@ -132,7 +134,6 @@ a:hover {
 .popis-portala {
     position: relative;
     top: 100px;
-    /*left: 40px;*/
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
@@ -172,15 +173,12 @@ a:hover {
     font-size: 16px;
 }
 
-.index-link-container {
-    /*background-color: #A07800;*/
-}
 
 /* logo portala*/
 .logo-portala {
     width: 70px;
     height:18px;
-    margin-left: 300px;
+    margin-left: 220px;
 }
 
 .ikonica {
@@ -188,5 +186,19 @@ a:hover {
     bottom: 30px;
     right: 70px;
 }
+
+.navigacija-stranice {
+    position: absolute;
+    left: 160px;
+}
+
+.page-link {
+    color: black;
+}
+
+.pagination > li > a:focus {
+    box-shadow: none;
+}
+
 
 

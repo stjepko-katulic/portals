@@ -6,6 +6,9 @@ import org.jsoup.select.Elements;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,10 +21,5 @@ public class ScrappingApplication {
     SpringApplication.run(ScrappingApplication.class, args);
   }
 
-//  @Override
-//  public void run(String... args) throws Exception {
-//
-//
-//
-//  }
+
 }

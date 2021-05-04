@@ -13,26 +13,27 @@ public class DnevnoModelSport implements IPortal {
   String baseUrlDnevno = "http://www.dnevno.hr";
   Elements elements = new Elements();
 
-  public DnevnoModelSport() throws IOException {
-    int brojStranica=2;
-
-    for (int i=1; i<=brojStranica; i++) {
+  public DnevnoModelSport(String stranica) throws IOException {
       // sport - nogomet
-      Document document = Jsoup.connect("https://www.dnevno.hr/category/sport/nogomet/page/" + i).get();
+      Document document = Jsoup.connect("https://www.dnevno.hr/category/sport/nogomet/page/" + stranica).get();
       Elements elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
       elements.addAll(elementsX);
 
       // sport - ostali sportovi
-      document = Jsoup.connect("https://www.dnevno.hr/category/sport/ostali-sportovi/page/" + i).get();
+      document = Jsoup.connect("https://www.dnevno.hr/category/sport/ostali-sportovi/page/" + stranica).get();
       elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
       elements.addAll(elementsX);
-    }
   }
 
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.getElementsByTag("h2").get(0).html())
+            .map(x -> {
+              String naslov= x.getElementsByTag("h2").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }
@@ -42,6 +43,8 @@ public class DnevnoModelSport implements IPortal {
     List<String> sazetciClanaka = elements.stream()
             .map(x -> {
               String sazetak = x.getElementsByTag("p").get(0).html();
+              sazetak = sazetak.replace("&nbsp;", " ");
+              sazetak = sazetak.replace("&amp;", "&");
 
               if (sazetak.length()>250) {
                 sazetak = sazetak.substring(0, 250) + "...";

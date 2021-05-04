@@ -15,26 +15,26 @@ public class RepModelVijesti implements IPortal {
   Elements elements = new Elements();
   String baseUrlRep = "https://rep.hr";
 
-  public RepModelVijesti() throws IOException {
-    int brojStranica=2;
+  public RepModelVijesti(String stranica) throws IOException {
+      Document document = Jsoup.connect("https://rep.hr/stranica/" + stranica).get();
 
-
-    for (int i=1; i<=brojStranica; i++) {
-      Document document = Jsoup.connect("https://rep.hr/stranica/" + i).get();
-
-      if (i==1) {
+      if (stranica.equals("1")) {
         elements.add(document.getElementsByClass("content-column").get(0).getElementsByClass("post").get(0));
       }
 
       Elements elementsX = document.getElementsByClass("content-column").get(0).getElementsByClass("standard");
       elements.addAll(elementsX);
-    }
   }
 
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.select("h1, h2, h3, h4").get(0).getElementsByTag("a").get(0).html())
+            .map(x -> {
+              String naslov = x.select("h1, h2, h3, h4").get(0).getElementsByTag("a").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }
@@ -48,6 +48,12 @@ public class RepModelVijesti implements IPortal {
               if (x.getElementsByClass("post-caption").get(0).getElementsByTag("p").size() > 0) {
                 sazetak = x.getElementsByClass("post-caption").get(0)
                         .getElementsByTag("p").get(0).html();
+                sazetak = sazetak.replace("&nbsp;", " ");
+                sazetak = sazetak.replace("&amp;", "&");
+
+                if (sazetak.length()>250) {
+                  sazetak = sazetak.substring(0, 250) + "...";
+                }
               } else {
                 sazetak = "";
               }

@@ -13,20 +13,16 @@ public class DnevnoModelVijesti implements IPortal {
   String baseUrlDnevno = "http://www.dnevno.hr";
   Elements elements = new Elements();
 
-  public DnevnoModelVijesti() throws IOException {
-    int brojStranica=2;
-
-    for (int i=1; i<=brojStranica; i++) {
+  public DnevnoModelVijesti(String stranica) throws IOException {
       // vijesti iz hrvatske
-      Document document = Jsoup.connect("https://www.dnevno.hr/category/vijesti/hrvatska/page/" + i).get();
+      Document document = Jsoup.connect("https://www.dnevno.hr/category/vijesti/hrvatska/page/" + stranica).get();
       Elements elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
       elements.addAll(elementsX);
 
       // vijesti iz svijeta
-      document = Jsoup.connect("https://www.dnevno.hr/category/vijesti/svijet/page/" + i).get();
+      document = Jsoup.connect("https://www.dnevno.hr/category/vijesti/svijet/page/" + stranica).get();
       elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
       elements.addAll(elementsX);
-    }
   }
 
 
@@ -34,7 +30,12 @@ public class DnevnoModelVijesti implements IPortal {
   @Override
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
-            .map(x -> x.getElementsByTag("h2").get(0).html())
+            .map(x -> {
+              String naslov = x.getElementsByTag("h2").get(0).html();
+              naslov = naslov.replace("&nbsp;", " ");
+              naslov = naslov.replace("&amp;", "&");
+              return naslov;
+            })
             .collect(Collectors.toList());
     return nasloviClanaka;
   }
@@ -44,6 +45,8 @@ public class DnevnoModelVijesti implements IPortal {
     List<String> sazetciClanaka = elements.stream()
             .map(x -> {
               String sazetak = x.getElementsByTag("p").get(0).html();
+              sazetak = sazetak.replace("&nbsp;", " ");
+              sazetak = sazetak.replace("&amp;", "&");
 
               if (sazetak.length()>250) {
                 sazetak = sazetak.substring(0, 250) + "...";

@@ -102,11 +102,18 @@
 
     .ikonica {
         position: absolute;
-        bottom: 200px;
-        right: 90px;
+        bottom: 240px;
+        right: 105px;
     }
 
     .logo-portala {
         margin-top: 15px;
+    }
+
+    .copyright {
+        position: absolute;
+        bottom: 180px;
+        left: 55px;
+        font-size: 20px;
     }
 }

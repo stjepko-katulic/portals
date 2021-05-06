@@ -7,6 +7,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,16 +19,14 @@ public class IctModelVijesti implements IPortal {
   String baseUrlIctBusiness = "https://www.ictbusiness.info/";
 
   public IctModelVijesti(String stranica) throws IOException {
+    String skip = Integer.toString((Integer.parseInt(stranica) - 1) * 30);
 
-     String skip = Integer.toString((Integer.parseInt(stranica)-1)*30);
-
-      Document document = Jsoup.connect("https://www.ictbusiness.info/vijesti/?skip=" + skip).get();
-      Elements elementsX = document.getElementsByClass("main-content-block").get(0)
-              .getElementsByClass("item");
-      elements.addAll(elementsX);
+    Document document = Jsoup.connect("https://www.ictbusiness.info/vijesti/?skip=" + skip).get();
+    Elements elementsX = document.getElementsByClass("main-content-block").get(0)
+            .getElementsByClass("item");
+    elements.addAll(elementsX);
 
   }
-
 
 
   @Override
@@ -51,7 +52,7 @@ public class IctModelVijesti implements IPortal {
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
-              if (sazetak.length()>250) {
+              if (sazetak.length() > 250) {
                 sazetak = sazetak.substring(0, 250) + "...";
               }
 
@@ -81,8 +82,24 @@ public class IctModelVijesti implements IPortal {
   @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
-            .map(x -> "")
+            .map(x -> {
+              String vrijemeObjave = x.getElementsByClass("item-meta-i").html();
+              vrijemeObjave = vrijemeObjave.substring(vrijemeObjave.length()-11, vrijemeObjave.length());
+              return vrijemeObjaveConverter("00:00 " + vrijemeObjave);
+            })
             .collect(Collectors.toList());
     return vremenaObjave;
+  }
+
+
+  private String vrijemeObjaveConverter(String vrijemeObjave) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy.");
+    LocalDateTime dateTime = LocalDateTime.parse(vrijemeObjave, formatter);
+    Duration razlika = Duration.between(dateTime, LocalDateTime.now());
+
+    long prijeDana = razlika.toDays();
+    String objavljenoPrije = "prije " + prijeDana + " dana";
+
+    return objavljenoPrije;
   }
 }

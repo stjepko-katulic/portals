@@ -6,6 +6,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,8 +72,33 @@ public class NetModelSport implements IPortal {
   @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
-            .map(x -> "")
+            .map(x -> {
+              String vrijemeObjave = x.getElementsByClass("undertitle").html().substring(0,16);
+              return vrijemeObjaveConverter(vrijemeObjave);
+            })
             .collect(Collectors.toList());
     return vremenaObjave;
+  }
+
+  private String vrijemeObjaveConverter(String vrijemeObjave) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
+    LocalDateTime dateTime = LocalDateTime.parse(vrijemeObjave, formatter);
+    Duration razlika = Duration.between(dateTime, LocalDateTime.now());
+
+    long prijeDana = razlika.toDays();
+    long prijeSati = razlika.toHours();
+    long orijeMinuta = razlika.toMinutes();
+
+    String objavljenoPrije;
+
+    if (prijeDana!=0L) {
+      objavljenoPrije = "prije " + prijeDana + " dana";
+    } else if (prijeSati!=0L) {
+      objavljenoPrije = "prije " + prijeSati + " h";
+    } else {
+      objavljenoPrije = "prije " + orijeMinuta + " min";
+    }
+
+    return objavljenoPrije;
   }
 }

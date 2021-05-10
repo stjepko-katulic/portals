@@ -90,7 +90,7 @@ public class MainController {
     }
 
     narodModelVijesti.createElements(stranica);
-    narodModelVijesti.createElements(stranica);
+    narodModelSport.createElements(stranica);
     getModelAndView(narodModelVijesti, modelAndView, "Vijesti");
     getModelAndView(narodModelSport, modelAndView, "Sport");
     modelAndView.addObject("counter", new Counter());

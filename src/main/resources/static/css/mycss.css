@@ -57,7 +57,7 @@ body {
     background-color: white;
     border-bottom: 1px solid #e0a800;
     width: 500px;
-    height: 260px;
+    height: 220px;
     margin: 0 auto 10px auto;
     color: black;
     padding-bottom: 3px;
@@ -70,14 +70,6 @@ body {
     margin: 15px;
     margin-right: 55px;
     margin-bottom: 20px;
-}
-
-.news-container-left {
-    display: inline-block;
-    text-align: justify;
-    margin: 15px;
-    margin-left: 5px;
-    float: left;
 }
 
 .heading {
@@ -158,7 +150,7 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.link-portal-index, .link-portal-narod, .link-portal-dnevno , .link-portal-net,
+.link-portal-index, .link-portal-narod, .link-portal-science, .link-portal-net,
 .link-portal-rep, .link-portal-ict {
     position: relative;
     display: inline-block;

@@ -4,30 +4,25 @@ import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "narodModelVijesti")
 public class NarodModelVijesti implements IPortal {
 
   String baseUrlNarod = "www.narod.hr";
   Elements elements = new Elements();
   Elements elementsSazetci = new Elements();
 
-  public NarodModelVijesti(String stranica) throws IOException {
-      // vijesti iz hrvatske
-      Document document = Jsoup.connect("https://narod.hr/hrvatska/page/" + stranica).get();
-      Elements elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
-      elements.addAll(elementsX);
-      elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
+  @Value(value = "${properties.max-broj-znakova.sazetak}")
+  int maxBrojZnakovaSazetak;
 
-      // vijesti iz svijeta
-      document = Jsoup.connect("https://narod.hr/svijet/page/" + stranica).get();
-      elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
-      elements.addAll(elementsX);
-      elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
-  }
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -36,6 +31,11 @@ public class NarodModelVijesti implements IPortal {
               String naslov = x.attr("title");
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
+              }
+
               return naslov;
             })
             .collect(Collectors.toList());
@@ -50,8 +50,8 @@ public class NarodModelVijesti implements IPortal {
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
-              if (sazetak.length()>250) {
-                sazetak = sazetak.substring(0, 250) + "...";
+              if (sazetak.length()>maxBrojZnakovaSazetak) {
+                sazetak = sazetak.substring(0, maxBrojZnakovaSazetak) + "...";
               }
 
               return sazetak;
@@ -70,30 +70,28 @@ public class NarodModelVijesti implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaSlike = elements.stream()
-            .map(x -> {
-
-              String urlSlike;
-
-              try {
-                 urlSlike = x.getElementsByTag("img").get(0).attr("data-lazy-src");
-              } catch (Exception e) {
-                urlSlike = x.getElementsByClass("entry-thumb").get(0).attr("data-bg");
-              }
-              return urlSlike;
-            })
-            .collect(Collectors.toList());
-//
-    return linkoviNaSlike;
-  }
-
-
-  @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
             .map(x -> "")
             .collect(Collectors.toList());
      return vremenaObjave;
+  }
+
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+      elements.clear();
+
+    // vijesti iz hrvatske
+    Document document = Jsoup.connect("https://narod.hr/hrvatska/page/" + stranica).get();
+    Elements elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
+    elements.addAll(elementsX);
+    elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
+
+    // vijesti iz svijeta
+    document = Jsoup.connect("https://narod.hr/svijet/page/" + stranica).get();
+    elementsX = document.getElementsByClass("td-main-content").get(0).getElementsByClass("td-image-wrap");
+    elements.addAll(elementsX);
+    elementsSazetci.addAll(document.getElementsByClass("td-excerpt"));
   }
 }

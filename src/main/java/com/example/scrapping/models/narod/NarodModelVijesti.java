@@ -70,26 +70,6 @@ public class NarodModelVijesti implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaSlike = elements.stream()
-            .map(x -> {
-
-              String urlSlike;
-
-              try {
-                 urlSlike = x.getElementsByTag("img").get(0).attr("data-lazy-src");
-              } catch (Exception e) {
-                urlSlike = x.getElementsByClass("entry-thumb").get(0).attr("data-bg");
-              }
-              return urlSlike;
-            })
-            .collect(Collectors.toList());
-//
-    return linkoviNaSlike;
-  }
-
-
-  @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
             .map(x -> "")

@@ -50,14 +50,6 @@ public class NetModelSport implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviSlikeClanaka = elements.stream()
-            .map(x -> x.getElementsByTag("img").get(0).attr("src"))
-            .collect(Collectors.toList());
-    return linkoviSlikeClanaka;
-  }
-
-  @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanke = elements.stream()
             .map(x -> x.getElementsByTag("a").get(0).attr("href"))

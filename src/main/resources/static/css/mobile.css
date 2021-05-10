@@ -88,9 +88,9 @@
         width: 120px;
     }
 
-    .link-portal-index, .link-portal-narod, .link-portal-dnevno , .link-portal-net,
+    .link-portal-index, .link-portal-narod, .link-portal-science, .link-portal-net,
     .link-portal-rep, .link-portal-ict {
-        left:40px;
+        left:70px;
     }
 
     .vijesti-naslov {

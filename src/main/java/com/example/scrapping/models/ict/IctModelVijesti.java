@@ -66,14 +66,6 @@ public class IctModelVijesti implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaSlike = elements.stream()
-            .map(x -> baseUrlIctBusiness + x.getElementsByTag("img").get(0).attr("src"))
-            .collect(Collectors.toList());
-    return linkoviNaSlike;
-  }
-
-  @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanke = elements.stream()
             .map(x -> x.getElementsByClass("item-content").get(0)

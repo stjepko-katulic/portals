@@ -39,20 +39,16 @@ public class MainController {
   IPortal narodModelSport;
 
   @Autowired
-  @Qualifier(value = "dnevnoModelVijesti")
-  IPortal dnevnoModelVijesti;
-
-  @Autowired
-  @Qualifier(value = "dnevnoModelSport")
-  IPortal dnevnoModelSport;
-
-  @Autowired
   @Qualifier(value = "repModelVijesti")
   IPortal repModelVijesti;
 
   @Autowired
   @Qualifier(value = "ictModelVijesti")
   IPortal ictModelVijesti;
+
+  @Autowired
+  @Qualifier(value = "scienceModelVijesti")
+  IPortal scienceModelVijesti;
 
   @GetMapping(path = {"/", "/index"})
   public ModelAndView index() throws IOException {
@@ -102,23 +98,6 @@ public class MainController {
     return modelAndView;
   }
 
-  @GetMapping(path={"/dnevno", "/dnevno/{stranica}"})
-  public ModelAndView dnevnoScrapping(@PathVariable(required = false) String stranica) throws IOException {
-    ModelAndView modelAndView = new ModelAndView();
-
-    if (stranica == null) {
-      stranica  = "1";
-    }
-
-    dnevnoModelVijesti.createElements(stranica);
-    dnevnoModelSport.createElements(stranica);
-    getModelAndView(dnevnoModelVijesti, modelAndView, "Vijesti");
-    getModelAndView(dnevnoModelSport, modelAndView, "Sport");
-    modelAndView.addObject("counter", new Counter());
-    modelAndView.setViewName("index");
-    return modelAndView;
-  }
-
 
   @GetMapping(path={"/rep", "/rep/{stranica}"})
   public ModelAndView repScrapping(@PathVariable(required = false) String stranica) throws IOException {
@@ -148,6 +127,23 @@ public class MainController {
     modelAndView.addObject("counter", new Counter());
     modelAndView.setViewName("index");
     return modelAndView;
+  }
+
+
+  @GetMapping(path = "/science")
+  public ModelAndView scienceScrapping(@PathVariable(required = false) String stranica) throws IOException {
+    ModelAndView modelAndView = new ModelAndView();
+
+    if (stranica == null) {
+      stranica  = "0";
+    }
+
+    scienceModelVijesti.createElements(stranica);
+    getModelAndView(scienceModelVijesti, modelAndView, "Vijesti");
+    modelAndView.addObject("counter", new Counter());
+    modelAndView.setViewName("index");
+    return modelAndView;
+
   }
 
 

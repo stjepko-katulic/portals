@@ -43,16 +43,16 @@ $('.link-portal-narod').on('click', function () {
     clickOnPortalLink("narod");
 });
 
-$('.link-portal-dnevno').on('click', function () {
-    clickOnPortalLink("dnevno");
-});
-
 $('.link-portal-rep').on('click', function () {
     clickOnPortalLink("rep");
 });
 
 $('.link-portal-ict').on('click', function () {
     clickOnPortalLink("ict");
+});
+
+$('.link-portal-science').on('click', function () {
+    clickOnPortalLink("science");
 });
 
 
@@ -63,7 +63,6 @@ function clickOnPortalLink(imePortala) {
             $('.portal-link-container').css('background-color', '#e0a800');
             $('#vijesti-tab').click();
             window.scrollTo(0, 0);
-            // $('.image').css({'width': '230px', 'height': '123px'});
             $('.logo-portala').attr('src', 'imgs/' + imePortala + '-logo.png');
             trenutnoAktivanPortalEndpoint = imePortala;
 
@@ -72,11 +71,10 @@ function clickOnPortalLink(imePortala) {
                 $('.navigacija-stranice').hide();
             } else {
                 $('.navigacija-stranice').removeAttr("hidden");
-                //$('.link-page1').click();
                 $('.link-page1').css('background-color', '#e0a800');
             }
 
-            if (imePortala==='rep' || imePortala==='ict') {
+            if (imePortala==='rep' || imePortala==='ict' || imePortala==='science') {
                 $('#sport-tab').hide();
             }
 

@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
 
     <link rel="shortcut icon" type="image/svg" href="imgs/worldwide.png"/>
-<!--    <link rel="shortcut icon" href="../static/imgs/worldwide.svg">-->
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
@@ -20,7 +18,6 @@
 
 
 <body>
-<!--<button type="button" class="btn btn-warning">Osvježi</button>-->
 <div id="ubacivanje-novog-sadrzaja">
 
     <div class="pomocni-div1"></div>
@@ -81,11 +78,6 @@
                                       th:text="${listaVremenaObjaveVijesti.get(counter.getCounter())}"></span>
                                 </div>
 
-<!--                                <div class="news-container-left">-->
-<!--                                    <img class="image" th:src="${linkoviNaSlikeVijesti.get(counter.getCounter())}"-->
-<!--                                         alt="slika-naslova">-->
-<!--                                </div>-->
-
                                 <div class="news-container-right">
                                     <p class="heading">
                                         <a class="heading1" th:text="${naslov}" target="_blank"
@@ -115,11 +107,6 @@
                             <span class="vrijeme-objave"
                                   th:text="${listaVremenaObjaveSport.get(counter.getCounter())}"></span>
                                 </div>
-
-<!--                                <div class="news-container-left"-->
-<!--                                    <img class="image" th:src="${linkoviNaSlikeSport.get(counter.getCounter())}"-->
-<!--                                         alt="slika-naslova">-->
-<!--                                </div>-->
 
                                 <div class="news-container-right">
                                     <a class="heading" th:text="${naslov}" target="_blank"
@@ -154,24 +141,19 @@
 
 
         <div class="portal-link-container index-link-container">
-            <p class="link-portal-index">index.hr</p>
+            <p class="link-portal-index">index</p>
         </div>
 
 
         <div class="portal-link-container">
-            <p class="link-portal-net">net.hr</p>
+            <p class="link-portal-net">net</p>
         </div>
 
 
         <div class="portal-link-container">
-            <p class="link-portal-narod">narod.hr</p>
+            <p class="link-portal-narod">narod</p>
         </div>
 
-<!--        <div class="portal-link-container">-->
-<!--            <p class="link-portal-dnevno">dnevno.hr</p>-->
-<!--        </div>-->
-
-        <br>
         <br>
         <br>
 
@@ -181,12 +163,23 @@
 
 
         <div class="portal-link-container">
-            <p class="link-portal-rep">rep.hr</p>
+            <p class="link-portal-rep">rep</p>
         </div>
 
 
         <div class="portal-link-container">
-            <p class="link-portal-ict">ictbusiness.info</p>
+            <p class="link-portal-ict">ictbusiness</p>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="vijesti>">
+            <p class="vijesti-naslov">ZNANOST</p>
+        </div>
+
+        <div class="portal-link-container">
+            <p class="link-portal-science">sciencemag</p>
         </div>
 
 

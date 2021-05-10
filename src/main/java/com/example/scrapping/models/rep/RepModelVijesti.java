@@ -68,14 +68,6 @@ public class RepModelVijesti implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaSlike = elements.stream()
-            .map(x -> baseUrlRep + x.getElementsByTag("img").get(0).attr("src"))
-            .collect(Collectors.toList());
-    return linkoviNaSlike;
-  }
-
-  @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanke = elements.stream()
             .map(x -> baseUrlRep + x.select("h1, h2, h3, h4").get(0)

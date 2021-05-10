@@ -69,15 +69,6 @@ public class IndexModelVijesti implements IPortal {
   }
 
   @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaFotke = elements.stream()
-            .map(x -> x.getElementsByClass("img-responsive").get(0).attr("src"))
-            .collect(Collectors.toList());
-
-    return linkoviNaFotke;
-  }
-
-  @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanake = elements.stream()
             .map(x -> baseUrlIndex + x.getElementsByClass("vijesti-text-hover").get(0).attr("href"))

@@ -1,4 +1,4 @@
-package com.example.scrapping.models.dnevno;
+package com.example.scrapping.models.sciencemag;
 
 import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Component(value = "dnevnoModelSport")
-public class DnevnoModelSport implements IPortal {
-  String baseUrlDnevno = "http://www.dnevno.hr";
+@Component(value = "scienceModelVijesti")
+public class ScienceMagModelVijesti implements IPortal {
+
   Elements elements = new Elements();
+  String baseUrlScience = "https://www.sciencemag.org";
 
   @Value(value = "${properties.max-broj-znakova.sazetak}")
   int maxBrojZnakovaSazetak;
@@ -26,7 +31,7 @@ public class DnevnoModelSport implements IPortal {
   public List<String> getNasloviClanaka() {
     List<String> nasloviClanaka = elements.stream()
             .map(x -> {
-              String naslov= x.getElementsByTag("h2").get(0).html();
+              String naslov = x.getElementsByTag("h2").get(0).getElementsByTag("a").get(0).html();
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
 
@@ -37,6 +42,7 @@ public class DnevnoModelSport implements IPortal {
               return naslov;
             })
             .collect(Collectors.toList());
+
     return nasloviClanaka;
   }
 
@@ -44,7 +50,7 @@ public class DnevnoModelSport implements IPortal {
   public List<String> getSazetciClanaka() {
     List<String> sazetciClanaka = elements.stream()
             .map(x -> {
-              String sazetak = x.getElementsByTag("p").get(0).html();
+              String sazetak = x.getElementsByClass("media__deck").get(0).html();
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
@@ -58,46 +64,50 @@ public class DnevnoModelSport implements IPortal {
     return sazetciClanaka;
   }
 
-
   @Override
   public List<String> getLinkoviNaClanke() {
     List<String> linkoviNaClanke = elements.stream()
-            .map(x -> x.getElementsByTag("a").get(0).attr("href"))
+            .map(x -> baseUrlScience + x.getElementsByTag("h2").get(0)
+            .getElementsByTag("a").get(0).attr("href"))
             .collect(Collectors.toList());
     return linkoviNaClanke;
   }
 
-
-  @Override
-  public List<String> getLinkoviSlikeClanaka() {
-    List<String> linkoviNaSlike = elements.stream()
-            .map(x -> x.getElementsByTag("a").get(0).getElementsByTag("img").get(0).attr("src"))
-            .collect(Collectors.toList());
-    return linkoviNaSlike;
-  }
-
-
   @Override
   public List<String> getVremenaObjave() {
     List<String> vremenaObjave = elements.stream()
-            .map(x -> "")
+            .map(x -> {
+              String vrijemeObjave = "00:00 " + x.getElementsByTag("time").html();
+              vrijemeObjave = vrijemeObjave.replace(".", "");
+
+              if (vrijemeObjave.charAt(12)!=',') {
+                vrijemeObjave=vrijemeObjave.substring(0,10) + "0" + vrijemeObjave.substring(10);
+              }
+
+              return vrijemeObjaveConverter(vrijemeObjave);
+            })
             .collect(Collectors.toList());
     return vremenaObjave;
   }
+
 
   @Override
   public void createElements(String stranica) throws IOException {
     if (elements!=null)
       elements.clear();
 
-    // sport - nogomet
-    Document document = Jsoup.connect("https://www.dnevno.hr/category/sport/nogomet/page/" + stranica).get();
-    Elements elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
-    elements.addAll(elementsX);
+    Document document = Jsoup.connect("https://www.sciencemag.org/news/latest-news%20/h?page=0" + stranica).get();
+    elements = document.getElementsByClass("view-article-lists-page-3").get(0)
+            .getElementsByClass("media__body");
+  }
 
-    // sport - ostali sportovi
-    document = Jsoup.connect("https://www.dnevno.hr/category/sport/ostali-sportovi/page/" + stranica).get();
-    elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
-    elements.addAll(elementsX);
+
+  private String vrijemeObjaveConverter(String vrijemeObjave) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm MMM d, yyyy", Locale.ENGLISH);
+    LocalDateTime dateTime = LocalDateTime.parse(vrijemeObjave, formatter);
+    Duration razlika = Duration.between(dateTime, LocalDateTime.now());
+    long prijeDana = razlika.toDays();
+    String objavljenoPrije = "prije " + prijeDana + " dana";
+    return objavljenoPrije;
   }
 }

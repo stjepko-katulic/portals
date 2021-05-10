@@ -4,6 +4,8 @@ import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -12,24 +14,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "netModelSport")
 public class NetModelSport implements IPortal {
 
   String baseUrlNarod = "www.net.hr";
   Elements elements = new Elements();
 
-  public NetModelSport(String stranica) throws IOException {
-      // nogomet
-      Document document = Jsoup.connect("https://net.hr/kategorija/sport/nogomet/page/" + stranica).get();
-      Elements elementsX = document.getElementsByClass("article-feed");
-      elements.addAll(elementsX);
-
-      // ostali sportovi
-      document = Jsoup.connect("https://net.hr/kategorija/sport/ostali-sportovi/page/" + stranica).get();
-      elementsX = document.getElementsByClass("article-feed");
-      elements.addAll(elementsX);
-  }
-
-
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -38,6 +30,11 @@ public class NetModelSport implements IPortal {
               String naslov = x.getElementsByClass("title").get(0).html();
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
+              }
+
               return naslov;
             })
             .collect(Collectors.toList());
@@ -78,6 +75,22 @@ public class NetModelSport implements IPortal {
             })
             .collect(Collectors.toList());
     return vremenaObjave;
+  }
+
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+      elements.clear();
+
+    // nogomet
+    Document document = Jsoup.connect("https://net.hr/kategorija/sport/nogomet/page/" + stranica).get();
+    Elements elementsX = document.getElementsByClass("article-feed");
+    elements.addAll(elementsX);
+
+    // ostali sportovi
+    document = Jsoup.connect("https://net.hr/kategorija/sport/ostali-sportovi/page/" + stranica).get();
+    elementsX = document.getElementsByClass("article-feed");
+    elements.addAll(elementsX);
   }
 
   private String vrijemeObjaveConverter(String vrijemeObjave) {

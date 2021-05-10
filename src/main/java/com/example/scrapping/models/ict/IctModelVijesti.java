@@ -5,6 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -13,21 +15,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "ictModelVijesti")
 public class IctModelVijesti implements IPortal {
 
   Elements elements = new Elements();
   String baseUrlIctBusiness = "https://www.ictbusiness.info/";
 
-  public IctModelVijesti(String stranica) throws IOException {
-    String skip = Integer.toString((Integer.parseInt(stranica) - 1) * 30);
+  @Value(value = "${properties.max-broj-znakova.sazetak}")
+  int maxBrojZnakovaSazetak;
 
-    Document document = Jsoup.connect("https://www.ictbusiness.info/vijesti/?skip=" + skip).get();
-    Elements elementsX = document.getElementsByClass("main-content-block").get(0)
-            .getElementsByClass("item");
-    elements.addAll(elementsX);
-
-  }
-
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -37,6 +35,11 @@ public class IctModelVijesti implements IPortal {
                       .getElementsByTag("a").get(0).html();
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
+              }
+
               return naslov;
             })
             .collect(Collectors.toList());
@@ -52,8 +55,8 @@ public class IctModelVijesti implements IPortal {
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
-              if (sazetak.length() > 250) {
-                sazetak = sazetak.substring(0, 250) + "...";
+              if (sazetak.length() > maxBrojZnakovaSazetak) {
+                sazetak = sazetak.substring(0, maxBrojZnakovaSazetak) + "...";
               }
 
               return sazetak;
@@ -89,6 +92,19 @@ public class IctModelVijesti implements IPortal {
             })
             .collect(Collectors.toList());
     return vremenaObjave;
+  }
+
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+      elements.clear();
+
+    String skip = Integer.toString((Integer.parseInt(stranica) - 1) * 30);
+
+    Document document = Jsoup.connect("https://www.ictbusiness.info/vijesti/?skip=" + skip).get();
+    Elements elementsX = document.getElementsByClass("main-content-block").get(0)
+            .getElementsByClass("item");
+    elements.addAll(elementsX);
   }
 
 

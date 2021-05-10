@@ -4,26 +4,23 @@ import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "dnevnoModelSport")
 public class DnevnoModelSport implements IPortal {
   String baseUrlDnevno = "http://www.dnevno.hr";
   Elements elements = new Elements();
 
-  public DnevnoModelSport(String stranica) throws IOException {
-      // sport - nogomet
-      Document document = Jsoup.connect("https://www.dnevno.hr/category/sport/nogomet/page/" + stranica).get();
-      Elements elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
-      elements.addAll(elementsX);
+  @Value(value = "${properties.max-broj-znakova.sazetak}")
+  int maxBrojZnakovaSazetak;
 
-      // sport - ostali sportovi
-      document = Jsoup.connect("https://www.dnevno.hr/category/sport/ostali-sportovi/page/" + stranica).get();
-      elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
-      elements.addAll(elementsX);
-  }
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -32,6 +29,11 @@ public class DnevnoModelSport implements IPortal {
               String naslov= x.getElementsByTag("h2").get(0).html();
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
+              }
+
               return naslov;
             })
             .collect(Collectors.toList());
@@ -46,8 +48,8 @@ public class DnevnoModelSport implements IPortal {
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
-              if (sazetak.length()>250) {
-                sazetak = sazetak.substring(0, 250) + "...";
+              if (sazetak.length()>maxBrojZnakovaSazetak) {
+                sazetak = sazetak.substring(0, maxBrojZnakovaSazetak) + "...";
               }
 
               return sazetak;
@@ -81,5 +83,21 @@ public class DnevnoModelSport implements IPortal {
             .map(x -> "")
             .collect(Collectors.toList());
     return vremenaObjave;
+  }
+
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+      elements.clear();
+
+    // sport - nogomet
+    Document document = Jsoup.connect("https://www.dnevno.hr/category/sport/nogomet/page/" + stranica).get();
+    Elements elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
+    elements.addAll(elementsX);
+
+    // sport - ostali sportovi
+    document = Jsoup.connect("https://www.dnevno.hr/category/sport/ostali-sportovi/page/" + stranica).get();
+    elementsX = document.getElementsByClass("post-holder").get(0).getElementsByTag("article");
+    elements.addAll(elementsX);
   }
 }

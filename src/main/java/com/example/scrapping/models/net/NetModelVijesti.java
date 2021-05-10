@@ -4,7 +4,9 @@ import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,22 +18,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "netModelVijesti")
 public class NetModelVijesti implements IPortal {
 
   String baseUrlNarod = "www.net.hr";
   Elements elements = new Elements();
+  String stranica;
 
-  public NetModelVijesti(String stranica) throws IOException {
-      // vijesti iz hrvatske
-      Document document = Jsoup.connect("https://net.hr/kategorija/danas/hrvatska/page/" + stranica).get();
-      Elements elementsX = document.getElementsByClass("article-feed");
-      elements.addAll(elementsX);
-
-      // vijesti iz svijeta
-      document = Jsoup.connect("https://net.hr/kategorija/danas/svijet/page/" + stranica).get();
-      elementsX = document.getElementsByClass("article-feed");
-      elements.addAll(elementsX);
-  }
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -40,6 +35,11 @@ public class NetModelVijesti implements IPortal {
               String naslov = x.getElementsByClass("title").get(0).html();
               naslov = naslov.replace("&nbsp;", " ");
               naslov = naslov.replace("&amp;", "&");
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
+              }
+
               return naslov;
             })
             .collect(Collectors.toList());
@@ -82,6 +82,21 @@ public class NetModelVijesti implements IPortal {
     return vremenaObjave;
   }
 
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+      elements.clear();
+
+    // vijesti iz hrvatske
+    Document document = Jsoup.connect("https://net.hr/kategorija/danas/hrvatska/page/" + stranica).get();
+    Elements elementsX = document.getElementsByClass("article-feed");
+    elements.addAll(elementsX);
+
+    // vijesti iz svijeta
+    document = Jsoup.connect("https://net.hr/kategorija/danas/svijet/page/" + stranica).get();
+    elementsX = document.getElementsByClass("article-feed");
+    elements.addAll(elementsX);
+  }
 
 
   private String vrijemeObjaveConverter(String vrijemeObjave) {

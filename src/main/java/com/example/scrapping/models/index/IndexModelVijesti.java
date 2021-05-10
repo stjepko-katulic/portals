@@ -4,22 +4,25 @@ import com.example.scrapping.models.IPortal;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component(value = "indexModelVijesti")
 public class IndexModelVijesti implements IPortal {
 
   String baseUrlIndex = "http://www.index.hr";
   Document doc;
   Elements elements;
 
-  public IndexModelVijesti() throws IOException {
-    doc = Jsoup.connect("https://www.index.hr/najnovije?kategorija=3").get();
-    // trazenje svih elementata klase "title-box"
-    elements = doc.getElementsByClass("title-box");
-  }
+  @Value(value = "${properties.max-broj-znakova.sazetak}")
+  int maxBrojZnakovaSazetak;
+
+  @Value(value = "${properties.max-broj-znakova.naslov}")
+  int maxBrojZnakovaNaslov;
 
   @Override
   public List<String> getNasloviClanaka() {
@@ -32,6 +35,10 @@ public class IndexModelVijesti implements IPortal {
 
               if (naslov.indexOf(">") != -1) {
                 naslov = naslov.substring(naslov.lastIndexOf(">") + 1);
+              }
+
+              if (naslov.length()>maxBrojZnakovaNaslov) {
+                naslov = naslov.substring(0, maxBrojZnakovaNaslov) + "...";
               }
 
               return naslov;
@@ -49,8 +56,8 @@ public class IndexModelVijesti implements IPortal {
               sazetak = sazetak.replace("&nbsp;", " ");
               sazetak = sazetak.replace("&amp;", "&");
 
-              if (sazetak.length()>250) {
-                sazetak = sazetak.substring(0, 250) + "...";
+              if (sazetak.length()>maxBrojZnakovaSazetak) {
+                sazetak = sazetak.substring(0, maxBrojZnakovaSazetak) + "...";
               }
 
               return sazetak;
@@ -87,6 +94,16 @@ public class IndexModelVijesti implements IPortal {
             .collect(Collectors.toList());
 
     return vremenaObjave;
+  }
+
+  @Override
+  public void createElements(String stranica) throws IOException {
+    if (elements!=null)
+    elements.clear();
+
+    doc = Jsoup.connect("https://www.index.hr/najnovije?kategorija=3").get();
+    // trazenje svih elementata klase "title-box"
+    elements = doc.getElementsByClass("title-box");
   }
 
 }
